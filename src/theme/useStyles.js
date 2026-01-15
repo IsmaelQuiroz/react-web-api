@@ -24,7 +24,31 @@ const useStyles = makeStyles({
     },
     link: {
         marginTop: 8
+    },
+    appBar: {
+        paddingTop:8,
+        paddingBottom:8
+    },
+    grow:{
+        flexGrow: 1 /* El elemento crezca hasta llegar al punto de interrupción */
+    },
+    linkAppBarLogo: {
+        display:"inline-flex", /*Elementos en una sola línea sin relleno */
+        alignItems: "center" /* colocar sus elementos al centro verticalmente */
+    },
+    mr: {
+        marginRight: 3
+    },
+    buttonIcon: {
+        fontSize : 14,
+        padding: 0
+    },
+    linkAppBarDesktop: {
+        display: "inline-flex",
+        alignItems: "center",
+        padding: "6px 16px"
     }
+
 })
 
 export default useStyles;
