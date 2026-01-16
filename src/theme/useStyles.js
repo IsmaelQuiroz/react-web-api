@@ -1,4 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { createMuiTheme, makeStyles } from "@material-ui/core";
+
+const theme = createMuiTheme();
 
 const useStyles = makeStyles({
     containermt:{
@@ -30,7 +32,10 @@ const useStyles = makeStyles({
         paddingBottom:8
     },
     grow:{
-        flexGrow: 1 /* El elemento crezca hasta llegar al punto de interrupción */
+        flexGrow: 0, // si es menor a md (960px) que no tome ningun espacio
+        [theme.breakpoints.up('md')]:{
+            flexGrow: 1  /* El elemento crezca hasta llegar al punto de interrupción, es decir el elemento tome todo el espacio */
+        }
     },
     linkAppBarLogo: {
         display:"inline-flex", /*Elementos en una sola línea sin relleno */
@@ -47,6 +52,34 @@ const useStyles = makeStyles({
         display: "inline-flex",
         alignItems: "center",
         padding: "6px 16px"
+    },
+    list : {
+        width: 250
+    },
+    ListItem: {
+        pading: 0
+    },
+    linkAppBarMobile : {
+        display: "inline-flex",
+        alignItems: "center",
+        width: "100%",
+        padding: "8px 16px"
+    },
+    ListItemIcon: {
+        minWidth: 35
+    },
+    sectionDesktop : {
+        display: "none", //si es menor que md (960px) oculta los elementos
+        [theme.breakpoints.up('md')] : { /* Si el ancho de pantalla es mayor que md(960px) */
+            display: "flex" //Se muestran los elementos
+        }
+    },
+    sectionMobile : {
+        display: "flex",
+        flexGrow: 1,
+        [theme.breakpoints.up('md')] : {
+            display:'none'
+        }
     }
 
 })
