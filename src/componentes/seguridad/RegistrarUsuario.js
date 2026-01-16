@@ -1,6 +1,7 @@
-import { Avatar, Container, Grid, Card, Icon, Typography, TextField, Button, Link } from '@material-ui/core';
+import { Avatar, Container, Grid, Card, Icon, Typography, TextField, Button } from '@material-ui/core';
 import React from 'react';
 import useStyles from '../../theme/useStyles';
+import {Link} from 'react-router-dom'
 
 
 const RegistrarUsuario = () => {
@@ -58,7 +59,7 @@ const RegistrarUsuario = () => {
                                 </Grid>
                             </Grid>
                             <Link
-                            href="/"
+                            to="/login"
                             variant="body1"
                             className={classes.link}
                             >
