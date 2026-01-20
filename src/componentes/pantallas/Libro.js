@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Container, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@material-ui/core';
+import { Button, Card, Container, Dialog, DialogContent, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography,DialogTitle } from '@material-ui/core';
 import useStyles from '../../theme/useStyles';
 
 const clearLibro = {
@@ -30,11 +30,37 @@ const Libro = () => {
     }
 
     const abrirDialog = () =>{
+        setOpen(true);
         console.log("mi boton editar");
     }
 
     const eliminarData = () =>  {
         console.log("mi boton eliminar");
+    }
+
+    const [libroEdita, setLibroEdita] = useState({
+        categoriaE : '',
+        tituloE : '',
+        autorE: ''
+    })
+
+    const handleChangeEdita = (e) => {
+        const{ name , value} = e.target;
+        setLibroEdita(prev => ({
+            ...prev,
+            [name] : value
+        }))
+    }
+
+    const editarData = () => {
+        console.log("boton editar data", libroEdita);
+        cerrarDialog();
+    }
+
+    const [open, setOpen] = useState(false);
+
+    const cerrarDialog =() => {
+        setOpen(false);
     }
 
     const classes = useStyles();
@@ -59,7 +85,7 @@ const Libro = () => {
                                     <MenuItem value="Programacion">Programacion</MenuItem>
                                     <MenuItem value="Historia">Historia</MenuItem>
                                     <MenuItem value="Matematica">Matematica</MenuItem>
-                                </TextField>
+                                </TextField>                               
                             </Grid>
                             <Grid item md={6} xs={12} className={classes.gridmb}>
                                 <TextField
@@ -131,6 +157,58 @@ const Libro = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Dialog open={open} onClose={cerrarDialog} maxWidth="xs"
+                fullWidth align="center">
+                    <DialogTitle>Editar Libro</DialogTitle>
+                    <DialogContent>
+                        <form onSubmit={(e) => e.preventDefault()}>
+                            <TextField select
+                            label="Categoria"
+                            variant='outlined'
+                            fullWidth
+                            align="left"
+                            name="categoriaE"
+                            value={libroEdita.categoriaE}
+                            onChange={handleChangeEdita}>
+                                <MenuItem value="Programacion">Programacion</MenuItem>
+                                <MenuItem value="Historia">Historia</MenuItem>
+                                <MenuItem value="Matematica">Matematica</MenuItem>
+                            </TextField>
+                            
+                            <TextField
+                            label="titulo"
+                            variant="outlined"
+                            fullWidth
+                            className={classes.gridmb}
+                            name="tituloE"
+                            value={libroEdita.tituloE}
+                            onChange={handleChangeEdita}
+                            />
+
+                            <TextField
+                            label="Autor" 
+                            variant="outlined"
+                            fullWidth
+                            className={classes.gridmb}
+                            name="autorE"
+                            value={libroEdita.autorE}
+                            onChange={handleChangeEdita}
+                            />
+
+                            <Button 
+                            variant="contained"
+                            fullWidth
+                            color="primary"
+                            className={classes.gridmb}
+                            type="submit"
+                            onClick={editarData}>
+                                Guardar
+                            </Button>
+
+                        </form>
+                    </DialogContent>
+            </Dialog>
        </Container>
     );
 };
