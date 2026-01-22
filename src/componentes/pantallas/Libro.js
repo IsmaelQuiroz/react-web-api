@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Card, Container, Dialog, DialogContent, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography,DialogTitle } from '@material-ui/core';
 import useStyles from '../../theme/useStyles';
+import { agregarLibro, editarLibro, eliminarLibro, listarLibros, obtenerLibroKey } from '../data/libros';
+import { useEffect } from 'react';
 
 const clearLibro = {
     categoria : '',
@@ -25,20 +27,46 @@ const Libro = () => {
     }
 
     const guardarData =() =>{
-        console.log("Mis datos son", libro);
+        //console.log("Mis datos son", libro);
+        agregarLibro(libro); //se pasa como parametro la variable de estado, que es la que está almacenando los datos del formulario
+        //esta variable libro será agregada al array en la función que esta definida en el archivo Libro.js
         setLibro(clearLibro);
     }
 
-    const abrirDialog = () =>{
+    const [librosArray, setLibrosArray] = useState([]);
+
+    const listarDataLibros = () => {
+        const data = listarLibros();
+        setLibrosArray(data);
+    }
+
+    //useEffect se va ejecutar cada vez que el componente libros.js se renderize 
+    useEffect(() => {
+        listarDataLibros();
+
+    }, [librosArray.length]) //y se va ejecutar cada vez que cambie el tamaño de librosArray
+
+    const abrirDialog = (key) =>{
         setOpen(true);
+        const dataLibro = obtenerLibroKey(key);
+        setLibroEdita({
+            key : key,
+            categoriaE : dataLibro.categoria,
+            tituloE : dataLibro.titulo,
+            autorE: dataLibro.autor
+        })
+
         console.log("mi boton editar");
     }
 
-    const eliminarData = () =>  {
+    const eliminarData = (data) =>  {
+        const listaNuevaLibros = eliminarLibro(data);
+        setLibrosArray(listaNuevaLibros);
         console.log("mi boton eliminar");
     }
 
     const [libroEdita, setLibroEdita] = useState({
+        key: 0,
         categoriaE : '',
         tituloE : '',
         autorE: ''
@@ -53,7 +81,8 @@ const Libro = () => {
     }
 
     const editarData = () => {
-        console.log("boton editar data", libroEdita);
+        const nuevaData = editarLibro(libroEdita);
+        console.log("boton editar data", nuevaData);
         cerrarDialog();
     }
 
@@ -133,27 +162,32 @@ const Libro = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableRow>
-                            <TableCell>Programacion</TableCell>
-                            <TableCell>React Avanzado</TableCell>
-                            <TableCell>Vaxi Drez</TableCell>
-                            <TableCell>
-                                <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={abrirDialog}>
-                                    Editar
-                                </Button>
-                            </TableCell>
-                            <TableCell>
-                                <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={eliminarData}>
-                                    Eliminar
-                                </Button>
-                            </TableCell>
-                        </TableRow>
+                         {librosArray.map( 
+                            (libroObj) => (
+                                <TableRow key={libroObj.key}>
+                                        <TableCell>{libroObj.categoria}</TableCell>
+                                        <TableCell>{libroObj.titulo}</TableCell>
+                                        <TableCell>{libroObj.autor}</TableCell>
+                                        <TableCell>
+                                            <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => abrirDialog(libroObj.key)}>
+                                                Editar
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={() => eliminarData(libroObj)}>
+                                                Eliminar
+                                            </Button>
+                                        </TableCell>
+                                </TableRow>
+                            )
+                         )}
+                        
                     </TableBody>
                 </Table>
             </TableContainer>
