@@ -91,6 +91,40 @@ const useStyles = makeStyles({
         [theme.breakpoints.up('md')] : {
             display:'none'
         }
+    },
+    text_title : {
+        fontWeight: 600, //relleno de texto
+        color: "#494949",
+        marginBottom: 10
+    },
+    media : {
+        height: 320,
+        backgroundColor : "#F2F2F2",
+        margin: "15px 15px 0 15px"
+    },
+    price : {
+        float: "right", //que flote hacia la derecha
+        padding: "0 20px 0 20px",
+        backgroundColor: "#0f80aa"
+    },
+    text_card: {
+        fontWeight: "bold",
+        color: "#656565",
+        marginBottom: 8
+    },
+    PaperImg : {
+        backgroundColor: "#F2F2F2"
+        
+    },
+    mediaDetalle: {
+        width: 380,
+        height: 380,
+        margin: "auto"
+    },
+    text_detalle: {
+        fontWeight: 500,
+        color: "#494949",
+        marginBottom: 5
     }
 
 })

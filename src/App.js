@@ -5,7 +5,8 @@ import Login from './componentes/seguridad/Login';
 import RegistrarUsuario from './componentes/seguridad/RegistrarUsuario';
 import theme from './theme/theme';
 import { BrowserRouter as Router, Switch, Route}  from 'react-router-dom'
-import Libro from './componentes/pantallas/Libro';
+import Productos from './componentes/pantallas/Productos';
+import DetalleProducto from './componentes/pantallas/DetalleProducto';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Switch>
           <Route exact path="/login" component= {Login}/>
           <Route exact path="/registrar" component={RegistrarUsuario}/>
-          <Route exact path="/" component={Libro}/>
+          <Route exact path="/" component={Productos}/>
+          <Route exact path="/detalleProducto/:id" component={DetalleProducto}/>
         </Switch>
       </Router>
     </ThemeProvider>
