@@ -2,7 +2,12 @@ import { Button, CardMedia, Container, Grid, MenuItem, Paper, Table, TableBody, 
 import React from 'react';
 import useStyles from '../../theme/useStyles';
 
-const DetalleProducto = () => {
+const DetalleProducto = (props) => {
+
+    const agregarCarrito = () => {
+        props.history.push("/carrito")
+    }
+
     const classes = useStyles();
     return (
         <Container className={classes.containermt}>
@@ -50,7 +55,8 @@ const DetalleProducto = () => {
                                         <Button 
                                         variant="contained"
                                         color="primary"
-                                        size="large">
+                                        size="large"
+                                        onClick={agregarCarrito}>
                                             Agregar a Carrito
                                         </Button>
                                     </TableCell>
