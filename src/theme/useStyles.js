@@ -133,6 +133,30 @@ const useStyles = makeStyles({
     },
     papperPadding: {
         padding: 20
+    },
+    gridPC: {
+        margin: "auto",
+        marginTop: 20
+    },
+    buttonAnterior : {
+        marginRight : 8
+    },
+    formControl: {
+        margin: 12
+    },
+    gridLR :{
+        paddingLeft: 30,
+        paddingBottom:20,
+        paddingRight: 30
+    },
+    divider: {
+        marginTop: 12,
+        marginBottom: 12
+    },
+    imgProductoPC: {
+        background: "#F2F2F2",
+        width: 50,
+        height: 40
     }
 
 })

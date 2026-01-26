@@ -5,16 +5,15 @@ import { ProductoArray } from '../data/dataPrueba';
 
 
 const Productos = (props) => { //props es para cuando quiero utilizar las propiedades de mi componente Productos
-    const miArray = ProductoArray;
+    console.log('REACT_APP_URL_BASE', process.env.REACT_APP_URL_BASE);
 
     const verProducto = (id) => {
         props.history.push("/detalleProducto/"+id); //esta ruta tiene un parametro id, tal y como lo definimos en App.js
     }
 
+    const miArray = ProductoArray;
     const classes = useStyles();
     return(
-
-
 
         <Container className = {classes.containermt}>
             <Typography variant="h4" className={classes.text_title}>
