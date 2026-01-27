@@ -157,6 +157,42 @@ const useStyles = makeStyles({
         background: "#F2F2F2",
         width: 50,
         height: 40
+    },
+    text_envio: {
+        lineHeight: 3
+    },
+    alertNotDelivered : {
+        marginTop: 5,
+        padding: "15px 15px 5px 15px",
+        marginBottom: 20,
+        backgroundColor: "#ffcccc"
+    },
+    alertDelivered : {
+        marginTop: 5,
+        padding: "15px 15px 5px 15px",
+        marginBottom: 20,
+        backgroundColor: "#d6f5d6"
+    },
+    imageUploader: {
+        padding: 0,
+        margin: "-25px auto 15px",
+        width: 0
+    },
+    avatarPerfil:{
+        width: 130,
+        height: 130,
+        backgroundColor: "#0f80aa"    
+    },
+    table: {
+        border: "1px solid #e0e0e0"
+    },
+    iconDelivery:{
+        color: "green",
+        fontWeight: 900
+    },
+    iconNotDelivery:{
+        color: "red",
+        fontWeight: 900
     }
 
 })

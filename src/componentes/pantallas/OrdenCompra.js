@@ -1,125 +1,38 @@
-import { Button,Container, Divider, Grid, Paper, Radio, Step, Stepper, StepLabel,Table, Typography, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, TableContainer, TableRow, TableCell, TableBody, CardMedia } from '@material-ui/core';
-import React from 'react';
-import { useState } from 'react';
+import { Button, CardMedia, Container, Divider, Grid, Paper,Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@material-ui/core';
+import React from 'react'
 import useStyles from '../../theme/useStyles';
 
-const ProcesoCompra = (props) => {
-    
-    const [activeStep, setActiveStep] = useState(1);
-    
-    const continuarProceso = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    }
-    const retrocederProceso = () => {
-        setActiveStep( (prevActiveStep) => prevActiveStep - 1 );
-    }
-
-    const realizarPedido =() => {
-        const idCompra = "a49f3663-df2d-42ab-b853-a81d73e0bbd9";
-        props.history.push("/ordenCompra/" + idCompra);
-    }
-
+const OrdenCompra = (props) => {
+    const {id} = props.match.params;
+    const mensajeEnvio = "Entregado en 2020-12-26";
+    const mensajePago = "Pagado en 2020-12-23";
     const classes = useStyles();
 
-    return(
+    return (
         <Container className={classes.containermt}>
-            <Stepper activeStep={activeStep} alternativeLabel>
-                <Step>
-                    <StepLabel>Registrarse</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>Envío</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>Metodo de Pago</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>Realizar Pedido</StepLabel>
-                </Step>
-            </Stepper>
-            {activeStep === 1 ? (
-                <Grid md={6} xs={12} className={classes.gridPC}>
-                    <Typography variant="h6" className={classes.text_title}>
-                        ENVIO DEL PRODUCTO
-                    </Typography>
-                    <form onSubmit={ (e) => e.preventDefault()} className={classes.form}>
-                        <Grid container spacing={4}>
-                            <Grid item xs={12}>
-                                <TextField
-                                label="Direccion"
-                                fullWidth
-                                InputLabelProps={{shrink : true}}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                label="Ciudad"
-                                fullWidth
-                                InputLabelProps={{sgrink : true}}/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField 
-                                label="Pais"
-                                fullWidth
-                                InputLabelProps={{shrink:true}}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={continuarProceso}>
-                                    CONTINUAR
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </Grid>
-            ) : activeStep === 2 ? (
-                <Grid md={3} xs={12} className={classes.gridPC}>
-                    <Typography variant="h6" className={classes.text_tile}>
-                        METODO DE PAGO
-                    </Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <FormControl className={classes.formControl}>
-                                <FormLabel>
-                                    Seleccione Metodo
-                                </FormLabel>
-                                <RadioGroup>
-                                    <FormControlLabel
-                                    value="Paypal"
-                                    control={<Radio color="primary"/>}
-                                    label="Paypal o Tarjeta"/>
-                                </RadioGroup>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button 
-                            variant="contained"
-                            color="primary"
-                            className={classes.buttonAnterior}
-                            onClick={retrocederProceso}>
-                                ANTERIOR
-                            </Button>
-                            <Button
-                            variant="outlined"
-                            color="primary"
-                            onClick={continuarProceso}>
-                                CONTINUAR
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            ) : activeStep === 3 ? (
-                <Grid container className={classes.gridPC}>
-                    <Grid item md={8} xs={12} className={classes.gridLR}>
+            <Typography variant="h5" className={classes.text_title}>
+                ORDEN DE COMPRA: {id.toUpperCase()}
+            </Typography>
+            <Grid container spacing={2} className={classes.papperPadding}>
+            <Grid item md={8} xs={12} >
                         <Typography variant="h6" className={classes.text_title}>
                             ENVIO
                         </Typography>
-                        <Typography>
+                        <Typography variant="body2" className={classes.text_envio}>
+                            Nombres: Nestor Arcila
+                        </Typography>
+                        <Typography variant="body2" className={classes.text_envio}>
+                            Email: nestor@gmail.com
+                        </Typography>
+                        <Typography variant="body2" className={classes.text_envio}>
                             Dirección: Calle 2, Cali, Colombia
                         </Typography>
+                        <div className={classes.alertDelivered}>
+                            <Typography variant="body2" className={classes.text_title}>
+                                {mensajeEnvio}
+                            </Typography>
+                        </div>
+                            
                         <Divider className={classes.divider}/>
                         <Typography variant="h6" className={classes.text_title}>
                             METODO DE PAGO
@@ -127,6 +40,11 @@ const ProcesoCompra = (props) => {
                         <Typography>
                             Metodo: Paypal
                         </Typography>
+                        <div className={classes.alertDelivered}>
+                            <Typography variant="body2" className={classes.text_title}>
+                                {mensajePago}
+                            </Typography>
+                        </div>
                         <Divider className={classes.divider}/>
                         <Typography varitant="h6" className={classes.text_title}>
                             PRODUCTOS
@@ -156,12 +74,8 @@ const ProcesoCompra = (props) => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        <Button variant="contained"
-                        color="primary"
-                        onClick={retrocederProceso}>
-                            ANTERIOR
-                        </Button>
                     </Grid>
+
                     <Grid item md={4} xs={12}>
                         <TableContainer component={Paper} square>
                             <Table>
@@ -222,13 +136,20 @@ const ProcesoCompra = (props) => {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell>
+                                        <TableCell colSpan={2}>
                                             <Button
                                             variant="contained"
                                             color="primary"
                                             size="large"
-                                            onClick={realizarPedido}>
-                                                REALIZAR PEDIDO
+                                            fullWidth
+                                            className={classes.gridmb}>
+                                                Paypal
+                                            </Button>
+                                            <Button
+                                            variant="contained"
+                                            size="large"
+                                            fullWidth>
+                                                Tarjeta de Credito o Debito
                                             </Button>
                                         </TableCell>
                                     </TableRow>
@@ -236,10 +157,10 @@ const ProcesoCompra = (props) => {
                             </Table>
                         </TableContainer>
                     </Grid>
-                </Grid>
-            ) : null}
-        </Container>
-    );
-};
 
-export default ProcesoCompra;
+            </Grid>
+        </Container>
+    )
+}
+
+export default OrdenCompra;
