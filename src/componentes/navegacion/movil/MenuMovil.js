@@ -70,7 +70,7 @@ import useStyles from '../../../theme/useStyles';
                 <List disablePadding>
                     <ListItem button className={classes.listSubItem}
                     onClick={props.clickHandler}>
-                        <Link className={classes.linkAppBarMobile} to="/">
+                        <Link className={classes.linkAppBarMobile} to="/admin/Usuarios">
                             <ListItemIcon className={classes.ListItemIcon}>
                                 <Icon>group</Icon>
                             </ListItemIcon>

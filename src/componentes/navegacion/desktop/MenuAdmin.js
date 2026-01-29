@@ -43,7 +43,7 @@ const MenuAdmin = () => {
                 onClose={handleClose}>
                     {/*Elementos Hijos */}
                     <MenuItem className={classes.listItem} onClick={handleClose}>
-                        <Link className={classes.linkAppBarMobile} to="/">
+                        <Link className={classes.linkAppBarMobile} to="/admin/usuarios">
                             <ListItemIcon className={classes.ListItemIcon}>
                                 <Icon>group</Icon>
                             </ListItemIcon>
