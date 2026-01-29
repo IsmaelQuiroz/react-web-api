@@ -193,6 +193,13 @@ const useStyles = makeStyles({
     iconNotDelivery:{
         color: "red",
         fontWeight: 900
+    },
+    avatarPerfilAppBar:{
+        marginRight : 8,
+        backgroundColor : "#f2f2f2"
+    },
+    listSubItem: {
+        padding: "0 0 0 30px"
     }
 
 })
