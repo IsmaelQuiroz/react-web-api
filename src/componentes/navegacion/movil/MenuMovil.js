@@ -81,7 +81,7 @@ import useStyles from '../../../theme/useStyles';
                     </ListItem>
                     <ListItem button className={classes.listSubItem}
                     onClick={props.clickHandler}>
-                        <Link className={classes.linkAppBarMobile} to="/">
+                        <Link className={classes.linkAppBarMobile} to="/admin/listaProductos">
                             <ListItemIcon className={classes.ListItemIcon}>
                                 <Icon>storefront</Icon>
                             </ListItemIcon>

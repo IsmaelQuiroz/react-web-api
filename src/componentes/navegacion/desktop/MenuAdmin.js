@@ -53,7 +53,7 @@ const MenuAdmin = () => {
                         </Link>
                     </MenuItem>
                     <MenuItem className={classes.listItem} onClick={handleClose}>
-                        <Link className={classes.linkAppBarMobile} to="/">
+                        <Link className={classes.linkAppBarMobile} to="/admin/listaProductos">
                             <ListItemIcon className={classes.ListItemIcon}>
                                 <Icon>storefront</Icon>
                             </ListItemIcon>
