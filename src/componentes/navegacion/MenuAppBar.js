@@ -3,6 +3,9 @@ import React from 'react';
 import { useState } from 'react';
 import useStyles from '../../theme/useStyles';
 import { Link } from 'react-router-dom';
+import MenuCliente from './desktop/MenuCliente';
+import MenuAdmin from './desktop/MenuAdmin';
+import MenuMovil from './movil/MenuMovil';
 
 const MenuAppBar = () => {
     const [open, setOpen] = useState(false);
@@ -29,14 +32,15 @@ const MenuAppBar = () => {
                         <Drawer open={open} onClose={closeToggle}>
                             <div className={classes.list}>
                                 <List>
-                                    <ListItem button onClick={closeToggle} className={classes.ListItem}>
+                                    {/* <ListItem button onClick={closeToggle} className={classes.ListItem}>
                                         <Link to="/login" color="inherit" className={classes.linkAppBarMobile} underline="none">
                                             <ListItemIcon className={classes.ListItemIcon}>
                                                 <Icon>person</Icon>
                                             </ListItemIcon>
                                             <ListItemText>Login</ListItemText>
                                         </Link>
-                                    </ListItem>
+                                    </ListItem> */}
+                                    <MenuMovil clickHandler={closeToggle}/>
                                 </List>
                             </div>
                         </Drawer>
@@ -47,12 +51,14 @@ const MenuAppBar = () => {
                             </Link>
                         </div>
                         <div className={classes.sectionDesktop}>
-                            <Button color="inherit" className={classes.buttonIcon}>
+                            {/* <Button color="inherit" className={classes.buttonIcon}>
                                 <Link to="/login" color="inherit" className={classes.linkAppBarDesktop}  underline="none">
                                     <Icon className={classes.mr}>person</Icon>
                                     LOGIN
                                 </Link>
-                            </Button>
+                            </Button> */}
+                            <MenuCliente/>
+                            <MenuAdmin/>
                         </div>
                     </Toolbar>
                 </Container>
