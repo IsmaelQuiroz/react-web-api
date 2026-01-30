@@ -2,8 +2,14 @@ import { Button, Container, Icon, Table, TableBody, TableCell, TableContainer, T
 import React from 'react';
 import useStyles from '../../../theme/useStyles';
 
-const ListaPedidos = () => {
+const ListaPedidos = (props) => {
     const classes = useStyles();
+
+    const  verDetalle = () => {
+        const id= "8efbd5f7-35b7-4d05-bd75-eb77b7c53541";
+        props.history.push("/ordenCompra/"+id);
+    }
+
     return (
         <Container className={classes.containermt}>
             <Typography variant="h4" className={classes.text_title}>
@@ -37,7 +43,8 @@ const ListaPedidos = () => {
                             <TableCell>
                                 <Button
                                 variant="contained"
-                                color="inherit">
+                                color="inherit"
+                                onClick={verDetalle}>
                                     DETALLES
                                 </Button>
                             </TableCell>
@@ -56,7 +63,8 @@ const ListaPedidos = () => {
                             <TableCell>
                                 <Button
                                 variant="contained"
-                                color="inherit">
+                                color="inherit"
+                                onClick={verDetalle}>
                                     DETALLES
                                 </Button>
                             </TableCell>

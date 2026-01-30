@@ -4,7 +4,7 @@ import useStyles from '../../theme/useStyles';
 
 const OrdenCompra = (props) => {
     const {id} = props.match.params;
-    const mensajeEnvio = "Entregado en 2020-12-26";
+    const mensajeEnvio = "No Entregado";
     const mensajePago = "Pagado en 2020-12-23";
     const classes = useStyles();
 
@@ -27,7 +27,7 @@ const OrdenCompra = (props) => {
                         <Typography variant="body2" className={classes.text_envio}>
                             Dirección: Calle 2, Cali, Colombia
                         </Typography>
-                        <div className={classes.alertDelivered}>
+                        <div className={classes.alertNotDelivered}>
                             <Typography variant="body2" className={classes.text_title}>
                                 {mensajeEnvio}
                             </Typography>
@@ -137,7 +137,8 @@ const OrdenCompra = (props) => {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell colSpan={2}>
-                                            <Button
+                                            {/**Boton para el Usuario */}
+                                            {/* <Button
                                             variant="contained"
                                             color="primary"
                                             size="large"
@@ -150,6 +151,14 @@ const OrdenCompra = (props) => {
                                             size="large"
                                             fullWidth>
                                                 Tarjeta de Credito o Debito
+                                            </Button> */}
+                                            {/**Boton para el Admin */}
+                                            <Button
+                                            variant="contained"
+                                            color="primary"
+                                            fullWidth
+                                            >
+                                                MARCAR COMO ENTREGADO
                                             </Button>
                                         </TableCell>
                                     </TableRow>
