@@ -200,6 +200,20 @@ const useStyles = makeStyles({
     },
     listSubItem: {
         padding: "0 0 0 30px"
+    },
+    checkbox: {
+        display: "block",
+        padding: 0,
+        marginTop: 5,
+        marginBottom: 5
+    },
+    buttonAgregar : {
+        float: "right"
+    },
+    avatarProducto: {
+        width: 175,
+        height: 175,
+        backgroundColor: "#F2F2F2"
     }
 
 })

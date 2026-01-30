@@ -11,6 +11,12 @@ import CarritoCompras from './componentes/pantallas/CarritoCompras';
 import ProcesoCompra from './componentes/pantallas/ProcesoCompra';
 import OrdenCompra from './componentes/pantallas/OrdenCompra';
 import Perfil from './componentes/pantallas/Perfil';
+import Usuarios from './componentes/pantallas/admin/Usuarios';
+import EditarUsuario from './componentes/pantallas/admin/EditarUsuario';
+import ListaProductos from './componentes/pantallas/admin/ListaProductos';
+import AgregarProducto from './componentes/pantallas/admin/AgregarProducto';
+import EditarProducto from './componentes/pantallas/admin/EditarProducto';
+import ListaPedidos from './componentes/pantallas/admin/ListaPedidos';
 
 function App() {
   return (
@@ -26,6 +32,12 @@ function App() {
           <Route exact path="/procesoCompra" component={ProcesoCompra} />
           <Route exact path="/ordenCompra/:id" component={OrdenCompra}/> 
           <Route exact path="/perfil" component={Perfil}/>
+          <Route exact path="/admin/usuarios" component={Usuarios}/>
+          <Route exact path="/admin/usuario/:id" component={EditarUsuario}/>
+          <Route exact path="/admin/listaProductos" component={ListaProductos}/>
+          <Route exact path="/admin/agregarProducto" component={AgregarProducto}/>
+          <Route exact path="/admin/editarProducto/:id" component={EditarProducto}/>
+          <Route exact patch="/admin/listaPedidos" component={ListaPedidos}/>
         </Switch>
       </Router>
     </ThemeProvider>

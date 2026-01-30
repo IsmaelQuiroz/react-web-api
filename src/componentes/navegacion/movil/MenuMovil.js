@@ -70,7 +70,7 @@ import useStyles from '../../../theme/useStyles';
                 <List disablePadding>
                     <ListItem button className={classes.listSubItem}
                     onClick={props.clickHandler}>
-                        <Link className={classes.linkAppBarMobile} to="/">
+                        <Link className={classes.linkAppBarMobile} to="/admin/Usuarios">
                             <ListItemIcon className={classes.ListItemIcon}>
                                 <Icon>group</Icon>
                             </ListItemIcon>
@@ -81,7 +81,7 @@ import useStyles from '../../../theme/useStyles';
                     </ListItem>
                     <ListItem button className={classes.listSubItem}
                     onClick={props.clickHandler}>
-                        <Link className={classes.linkAppBarMobile} to="/">
+                        <Link className={classes.linkAppBarMobile} to="/admin/listaProductos">
                             <ListItemIcon className={classes.ListItemIcon}>
                                 <Icon>storefront</Icon>
                             </ListItemIcon>
@@ -105,7 +105,7 @@ import useStyles from '../../../theme/useStyles';
             {/**fin Admin */}
             <ListItem button className={classes.listItem} 
             onClick={props.clickHandler}>
-                <Link className={classes.linkAppBarMobile} to="/carrito">
+                <Link className={classes.linkAppBarMobile} to="/admin/listaPedidos">
                     <ListItemIcon className={classes.ListItemIcon}>
                         <Icon>shopping_cart</Icon>
                     </ListItemIcon>
