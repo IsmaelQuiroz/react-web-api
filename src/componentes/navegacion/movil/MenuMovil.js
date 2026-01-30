@@ -105,7 +105,7 @@ import useStyles from '../../../theme/useStyles';
             {/**fin Admin */}
             <ListItem button className={classes.listItem} 
             onClick={props.clickHandler}>
-                <Link className={classes.linkAppBarMobile} to="/carrito">
+                <Link className={classes.linkAppBarMobile} to="/admin/listaPedidos">
                     <ListItemIcon className={classes.ListItemIcon}>
                         <Icon>shopping_cart</Icon>
                     </ListItemIcon>
