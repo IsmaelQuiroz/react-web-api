@@ -3,9 +3,16 @@ import React from 'react';
 import useStyles from '../../../theme/useStyles';
 import { ProductoArray } from '../../data/dataPrueba';
 
-const ListaProductos = () => {
+const ListaProductos = (props) => {
     const classes = useStyles();
 
+    const agregarProducto = () => {
+        props.history.push("/admin/agregarProducto")
+    }
+
+    const editaProducto = (id) => {
+        props.history.push("/admin/editarProducto/"+ id);
+    }
     const productos = ProductoArray;
 
     return (
@@ -19,7 +26,8 @@ const ListaProductos = () => {
                 <Grid item lg={6} sm={6} xs={12}>
                    <Button variant="contained"
                    color="inherit"
-                   className={classes.buttonAgregar}>
+                   className={classes.buttonAgregar}
+                   onClick={agregarProducto}>
                     <Icon>add</Icon>
                         AGREGAR PRODUCTO
                    </Button>
@@ -46,7 +54,8 @@ const ListaProductos = () => {
                                 <TableCell>
                                     <Button
                                     variant="contained"
-                                    color="primary">
+                                    color="primary"
+                                    onClick={() => editaProducto(producto.key)}>
                                         <Icon>edit</Icon>
                                     </Button>
                                     <Button
