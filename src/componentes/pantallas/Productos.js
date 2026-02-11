@@ -3,10 +3,17 @@ import React, { useEffect, useState } from 'react';
 import useStyles from '../../theme/useStyles';
 import { getProductos} from '../../actions/ProductoAction';
 import { ProductoArray } from '../data/dataPrueba';
+import { Pagination } from '@material-ui/lab';
 
 
 const Productos = (props) => { //props es para cuando quiero utilizar las propiedades de mi componente Productos
     //console.log('REACT_APP_URL_BASE', process.env.REACT_APP_URL_BASE);
+
+    const [requestProductos, setRequestProductos] = useState({
+        pageIndex: 1,
+        pageSize: 2,
+        search: ''
+    });
 
     //en este objeto se va setear en automatico la data que venga del servidor
     //los campos se corresponden con estas propiedades
@@ -18,12 +25,18 @@ const Productos = (props) => { //props es para cuando quiero utilizar las propie
         data:[]
     });
 
+    const handleChange = (event, value) => {
+        setRequestProductos( (anterior) => ({
+            ...anterior,
+            pageIndex : value
+        }) );
+    };
 
     //funcion para ejecutar el action que va devolver los productos
     //este metodo es propio de los componentes ReactHooks, se ejecuta al momento que el componente es cargado en el browser
     useEffect(() => {
         const getListaProductos = async () => { //async es porque se esta trabajando con promesas
-              const response = await getProductos();  
+              const response = await getProductos(requestProductos);  
               /*la estructura del objeto de la variable de estado que recibe, es identica a la que va enviar el server en el objeto response
               entonces se va mapear automáticamente */
               console.log(response.data);
@@ -32,7 +45,9 @@ const Productos = (props) => { //props es para cuando quiero utilizar las propie
         };
 
         getListaProductos();
-    },[]); //esta parte es para indicar que solo se ejecute 1 sola ves la función contenida en el useEffect
+    },[requestProductos]); 
+    //[] esta parte es para indicar que solo se ejecute 1 sola ves la función contenida en el useEffect
+    //[nombreVariableEstado] para que el useEffect se ejecute cada vez que cambie alguno de los valores de la variable de estado
 
     const verProducto = (id) => {
         props.history.push("/detalleProducto/"+id); //esta ruta tiene un parametro id, tal y como lo definimos en App.js
@@ -59,7 +74,7 @@ const Productos = (props) => { //props es para cuando quiero utilizar las propie
                         <CardMedia 
                         className={classes.media}
                         //image="https://lagatavoladora.com/wp-content/uploads/2025/10/Chaqueta-forro-polar-boho-Flora-marca-Coline-La-Gata-Voladora-4.png"
-                        image={data.image}
+                        image={data.atributo}
                         title="Producto Image">
                             <Avatar variant="square" className={classes.price}>
                                 ${data.precio}
@@ -81,6 +96,9 @@ const Productos = (props) => { //props es para cuando quiero utilizar las propie
                 </Grid>
                 ))}
             </Grid>
+
+            <Pagination count={paginadorProductos.pageCount} page={paginadorProductos.pageIndex} onChange={handleChange}/>
+
         </Container>
     )
 }

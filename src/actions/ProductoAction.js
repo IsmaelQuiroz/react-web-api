@@ -2,13 +2,13 @@ import HttpCliente from '../servicios/HttpCliente';
 
 //Crea primero un objeto tipo request tomando la URL base de nuestro server backEnd
 //Luego le tengo que agregar el EndPoint que representa la lista de productos
-export const getProductos = () =>{
+export const getProductos = (request) =>{
     return new Promise((resolve, eject) => { 
         //una promesa permite espear la respuesta del server antes de continuar la ejecucion
         //de la siguiente linea de código, 
 
         //se hace la llamada al server
-        HttpCliente.get('/api/producto').then( response => {//lo que retorna el then es un objeto response, es lo que se le va devolver al cliente
+        HttpCliente.get(`/api/producto?pageIndex=${request.pageIndex}&pageSize=${request.pageSize}&search=${request.search}`).then( response => {//lo que retorna el then es un objeto response, es lo que se le va devolver al cliente
                 resolve(response); //La respuesta va envuelta en un objeto resolve
                 //lo que hace el resolve es indicarle a la función aquí me llegó la data, aqui terminó la Operación. 
                 //y tambiente devuelve la data al cliente o componente react que la solicita
