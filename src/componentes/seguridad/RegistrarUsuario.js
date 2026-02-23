@@ -3,22 +3,25 @@ import React from 'react';
 import useStyles from '../../theme/useStyles';
 import {Link} from 'react-router-dom'
 import { useState } from 'react';
+import { registrarUsuario } from '../../actions/UsuarioAction';
 
 
 const clearUsuario ={
         nombre:'',
-        apellidos:'',
+        apellido:'',
         email:'',
-        password:''
+        password:'',
+        username: ''
 }
 
 const RegistrarUsuario = () => {
     
     const [usuario, setUsuario] = useState({
         nombre:'',
-        apellidos:'',
+        apellido:'',
         email:'',
-        password:''
+        password:'',
+        username: ''
     })
 
     const handleChange = (e) => {
@@ -30,8 +33,17 @@ const RegistrarUsuario = () => {
     }
 
     const guardarUsuario = () =>{
-        console.log("mi usuario es", usuario);
-        setUsuario(clearUsuario);
+        // console.log("mi usuario es", usuario);
+        // setUsuario(clearUsuario);
+
+        //const insertarData = nuevoUsuario(usuario);
+        ////console.log("Usuario registrado :", insertarData);
+        //setUsuario(clearUsuario);
+
+        registrarUsuario(usuario).then( response => {
+            console.log("el objeto response que envia el servidor", response );
+            window.localStorage.setItem('token', response.data.token);
+        });
     }
 
     const classes = useStyles();
@@ -63,8 +75,18 @@ const RegistrarUsuario = () => {
                                     label="Apellidos"
                                     variant="outlined"
                                     fullWidth
-                                    name="apellidos"
-                                    value={usuario.apellidos}
+                                    name="apellido"
+                                    value={usuario.apellido}
+                                    onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item md={12} xs={12} className={classes.gridmb}>
+                                    <TextField 
+                                    label="Username"
+                                    variant="outlined"
+                                    fullWidth
+                                    name="username"
+                                    value={usuario.username}
                                     onChange={handleChange}
                                     />
                                 </Grid>
