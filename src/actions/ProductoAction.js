@@ -1,4 +1,10 @@
+import axios from 'axios';
 import HttpCliente from '../servicios/HttpCliente';
+
+const instancia = axios.create(); //instancia se va utilizar donde no se requiere enviar Token
+instancia.CancelToken = axios.CancelToken;
+instancia.isCancel = axios.isCancel;
+
 
 //Crea primero un objeto tipo request tomando la URL base de nuestro server backEnd
 //Luego le tengo que agregar el EndPoint que representa la lista de productos
@@ -8,7 +14,7 @@ export const getProductos = (request) =>{
         //de la siguiente linea de código, 
 
         //se hace la llamada al server
-        HttpCliente.get(`/api/producto?pageIndex=${request.pageIndex}&pageSize=${request.pageSize}&search=${request.search}`).then( response => {//lo que retorna el then es un objeto response, es lo que se le va devolver al cliente
+        instancia.get(`/api/producto?pageIndex=${request.pageIndex}&pageSize=${request.pageSize}&search=${request.search}`).then( response => {//lo que retorna el then es un objeto response, es lo que se le va devolver al cliente
                 resolve(response); //La respuesta va envuelta en un objeto resolve
                 //lo que hace el resolve es indicarle a la función aquí me llegó la data, aqui terminó la Operación. 
                 //y tambiente devuelve la data al cliente o componente react que la solicita

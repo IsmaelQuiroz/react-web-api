@@ -17,8 +17,25 @@ import ListaProductos from './componentes/pantallas/admin/ListaProductos';
 import AgregarProducto from './componentes/pantallas/admin/AgregarProducto';
 import EditarProducto from './componentes/pantallas/admin/EditarProducto';
 import ListaPedidos from './componentes/pantallas/admin/ListaPedidos';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { getUsuario } from './actions/UsuarioAction';
 
 function App() {
+  //Evento a ejecutar cuando se halla terminado desplegar el codigo HTML de este componente, 
+  //el codigo HTML es el inferior los Route
+  const [servidorRespuesta, setservidorRespuesta] = useState(false);
+
+
+  useEffect (() => {
+    if(!servidorRespuesta){
+      getUsuario().then( response => { //Este metodo debe enviar un token
+        setservidorRespuesta(true);
+        console.log('estado de sesion', response);
+      })
+    }
+  }, [servidorRespuesta])
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
