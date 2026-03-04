@@ -16,9 +16,20 @@ export const registrarUsuario = usuario => {
     });
 }
 
-export const loginUsuario = usuario => {
+
+//Un objeto Dispatch es parte de las librerias del ContextAPI ReactHooks
+//el objeto Dispatch permite llamar al reducer y l reducer actualizará la variable Global
+
+export const loginUsuario = (usuario, dispatch) => {
     return new Promise ( (resolve, eject) => {
         instancia.post("/api/usuario/login", usuario).then(response => {
+
+            dispatch({
+                type: "INICIAR_SESION",
+                sesion : response.data,
+                autenticado: true
+            })
+
             resolve(response);
         })
         .catch((error) => {
@@ -30,9 +41,16 @@ export const loginUsuario = usuario => {
 //Las Autorizaciones y configuración del request van dentro del Header 
 //por ello no se considera el parametro usuario en la funcion del action, 
 //se pasaria el token a través del header
-export const getUsuario = () => {
+export const getUsuario = (dispatch) => {
     return new Promise ( (resolve, eject) => {
         HttpCliente.get("/api/usuario").then(response => {
+
+            dispatch({
+                type: "INICIAR_SESION",
+                sesion: response.data,
+                autenticado: true
+            })
+
             resolve(response);
         })
         .catch(error => {

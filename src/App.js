@@ -20,8 +20,12 @@ import ListaPedidos from './componentes/pantallas/admin/ListaPedidos';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { getUsuario } from './actions/UsuarioAction';
+import { useStateValue } from './contexto/store';
 
 function App() {
+
+  const [{sesionUsuario} , dispatch] = useStateValue();
+
   //Evento a ejecutar cuando se halla terminado desplegar el codigo HTML de este componente, 
   //el codigo HTML es el inferior los Route
   const [servidorRespuesta, setservidorRespuesta] = useState(false);
@@ -29,7 +33,7 @@ function App() {
 
   useEffect (() => {
     if(!servidorRespuesta){
-      getUsuario().then( response => { //Este metodo debe enviar un token
+      getUsuario(dispatch).then( response => { //Este metodo debe enviar un token
         setservidorRespuesta(true);
         console.log('estado de sesion', response);
       })
