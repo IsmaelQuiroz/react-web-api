@@ -4,7 +4,7 @@ import useStyles from '../../theme/useStyles';
 import {Link} from 'react-router-dom'
 import { useState } from 'react';
 import { registrarUsuario } from '../../actions/UsuarioAction';
-
+import { useStateValue } from '../../contexto/store';
 
 const clearUsuario ={
         nombre:'',
@@ -14,7 +14,10 @@ const clearUsuario ={
         username: ''
 }
 
-const RegistrarUsuario = (props) => {    
+const RegistrarUsuario = (props) => { 
+    
+    const [{sesionUsuario}, dispatch] = useStateValue();
+    
     const [usuario, setUsuario] = useState({
         nombre:'',
         apellido:'',
@@ -39,7 +42,7 @@ const RegistrarUsuario = (props) => {
         ////console.log("Usuario registrado :", insertarData);
         //setUsuario(clearUsuario);
 
-        registrarUsuario(usuario).then( response => {
+        registrarUsuario(usuario, dispatch).then( response => {
             props.history.push('/');
             console.log("el objeto response que envia el servidor", response );
             window.localStorage.setItem('token', response.data.token);

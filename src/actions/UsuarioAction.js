@@ -5,9 +5,16 @@ const instancia = axios.create(); //instancia se va utilizar donde no se requier
 instancia.CancelToken = axios.CancelToken;
 instancia.isCancel = axios.isCancel;
 
-export const registrarUsuario = usuario => {
+export const registrarUsuario = (usuario, dispatch) => {
     return new Promise( (resolve, eject) => {
         instancia.post("/api/usuario/registrar", usuario).then( response => {
+
+            dispatch({
+                type: "INICIAR_SESION",
+                sesion: response.data,
+                autenticado: true
+            })
+
             resolve(response);
         })
         .catch((error) => {
