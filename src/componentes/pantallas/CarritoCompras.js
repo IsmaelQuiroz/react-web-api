@@ -2,8 +2,14 @@ import { Button,CardMedia,Container,Divider,Grid,Icon,IconButton,MenuItem,Paper,
 import React from 'react';
 import useStyles from '../../theme/useStyles';
 import { ProductoArray } from '../data/dataPrueba';
+import {useStateValue} from '../../contexto/store';
 
 const CarritoCompras = (props) => {
+
+    const [{sesionCarritoCompra}, dispatch] = useStateValue();
+    
+    console.log('sesionCarritoCompra', sesionCarritoCompra);
+
     const miArray = ProductoArray;
     const realizarCompra =() => {
         props.history.push("/procesoCompra");
