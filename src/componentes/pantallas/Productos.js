@@ -4,10 +4,16 @@ import useStyles from '../../theme/useStyles';
 import { getProductos} from '../../actions/ProductoAction';
 import { ProductoArray } from '../data/dataPrueba';
 import { Pagination } from '@material-ui/lab';
+import { addItem } from '../../actions/CarritoCompraAction';
+import { useStateValue} from '../../contexto/store';
 
 
 const Productos = (props) => { //props es para cuando quiero utilizar las propiedades de mi componente Productos
     //console.log('REACT_APP_URL_BASE', process.env.REACT_APP_URL_BASE);
+
+    //sesionCarritoCompra, representa el carrito de compra global de mi proyecto
+    //el objeto dispatch  usualmente se importa  de manera gobal al proyecto reactHooks
+    const [{sesionCarritoCompre}, dispatch] = useStateValue();
 
     const [requestProductos, setRequestProductos] = useState({
         pageIndex: 1,
@@ -49,11 +55,15 @@ const Productos = (props) => { //props es para cuando quiero utilizar las propie
     //[] esta parte es para indicar que solo se ejecute 1 sola ves la función contenida en el useEffect
     //[nombreVariableEstado] para que el useEffect se ejecute cada vez que cambie alguno de los valores de la variable de estado
 
-    const verProducto = (id) => {
-        props.history.push("/detalleProducto/"+id); //esta ruta tiene un parametro id, tal y como lo definimos en App.js
+    const verProducto = async (item) => {
+        //console.log('rev: ',item);
+        //Carrito de compra en sesion Global, item que se quiere agregar, tercero el Dispatch
+        //await addItem(sesionCarritoCompre, item, dispatch);
+
+        props.history.push("/detalleProducto/"+item.id); //esta ruta tiene un parametro id, tal y como lo definimos en App.js
     }
 
-    const miArray = ProductoArray;
+    //const miArray = ProductoArray;
     const classes = useStyles();
 
     if(!paginadorProductos.data){ //si no existe
@@ -69,7 +79,7 @@ const Productos = (props) => { //props es para cuando quiero utilizar las propie
             <Grid container spacing={4}>
                 {/* {miArray.map(data => ( //map esto es un bucle */}
                 {paginadorProductos.data.map(data => ( //esto es un bucle
-                <Grid item lg={3} md={4} sm={6} xs ={12} key={data.key}>
+                <Grid item lg={3} md={4} sm={6} xs ={12} key={data.id}>
                     <Card>
                         <CardMedia 
                         className={classes.media}
@@ -88,7 +98,7 @@ const Productos = (props) => { //props es para cuando quiero utilizar las propie
                             variant="contained"
                             color="primary"
                             fullWidth
-                            onClick={() => verProducto(data.id)}>
+                            onClick={() => verProducto(data)}>
                                 MAS DETALLES
                             </Button>
                         </CardContent>

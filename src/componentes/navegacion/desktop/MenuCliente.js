@@ -3,9 +3,11 @@ import React from 'react'
 import useStyles from '../../../theme/useStyles';
 import {Link} from 'react-router-dom';
 import { useState } from 'react';
+import { useStateValue } from '../../../contexto/store';
 
 
 const MenuCliente = () => {
+    const [ {sesionUsuario}, dispatch ] = useStateValue();  
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -35,7 +37,9 @@ const MenuCliente = () => {
                         className={classes.avatarPerfilAppBar}
                         src="https://i.pinimg.com/736x/88/52/7d/88527d9e87b400a4f5f78b3da0208e1b.jpg"
                         />
-                        Mario Ismael
+                        { sesionUsuario 
+                        ? (sesionUsuario.autenticado ? sesionUsuario.usuario.nombre +' ' +  sesionUsuario.usuario.apellido : "No sesión")
+                        : "No sesion"}
                         <Icon>keyboard_arrow_down</Icon>
                     </div>                   
                 </Button>
