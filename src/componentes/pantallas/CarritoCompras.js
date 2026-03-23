@@ -1,4 +1,4 @@
-import { Button,CardMedia,Container,Divider,Grid,Icon,IconButton,MenuItem,Paper,Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@material-ui/core';
+import { Button,CardMedia,Container,Divider,Grid,Icon,IconButton,MenuItem,Paper,Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography, Select } from '@material-ui/core';
 import React from 'react';
 import useStyles from '../../theme/useStyles';
 import { ProductoArray } from '../data/dataPrueba';
@@ -6,14 +6,20 @@ import {useStateValue} from '../../contexto/store';
 
 const CarritoCompras = (props) => {
 
-    const [{sesionCarritoCompra}, dispatch] = useStateValue();
+    const [{sesionCarritoCompre}, dispatch] = useStateValue();
     
-    console.log('sesionCarritoCompra', sesionCarritoCompra);
+    console.log('sesionCarritoCompra', sesionCarritoCompre);
 
-    const miArray = ProductoArray;
+    const miArray = sesionCarritoCompre ? sesionCarritoCompre.items : []; /*ProductoArray;*/
+    let suma = 0;
+    miArray.forEach(prod => {
+        suma += prod.precio;    
+    });
+
     const realizarCompra =() => {
         props.history.push("/procesoCompra");
     }
+
     const classes  = useStyles();
     return (
         <Container className={classes.containermt}>
@@ -25,28 +31,31 @@ const CarritoCompras = (props) => {
                     <TableContainer>
                         <Table>
                             <TableBody>
-                                {miArray.map(producto =>(
-                                    <TableRow key={producto.key}>
+                                {miArray.map(item =>(
+                                    <TableRow key={item.id}>
                                          <TableCell>
                                              <CardMedia 
                                              className={classes.imgProductoCC}
                                              image="https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/202406/25/00151057402359____9__440x546.jpg"
-                                             title="Imagen en carrito"
+                                             title={item.producto}
                                              />
                                          </TableCell>
                                          <TableCell>
                                             <Typography className={classes.text_detalle}>
-                                                {producto.titulo}
+                                                {item.producto}
                                             </Typography>
                                          </TableCell>
                                          <TableCell>
                                             <Typography className={classes.text_detalle}>
-                                                ${producto.precio}
+                                                ${item.precio}
                                             </Typography>
                                          </TableCell>
                                          <TableCell>
-                                            <TextField
-                                            select
+                                            <Typography className={classes.text_detalle}>
+                                                {item.cantidad}
+                                            </Typography>
+                                            {/* <Select
+                                            defaultValue={1}
                                             variant="outlined"
                                             size="small">
                                                     <MenuItem value={1}>1</MenuItem>
@@ -54,7 +63,7 @@ const CarritoCompras = (props) => {
                                                     <MenuItem value={3}>3</MenuItem>
                                                     <MenuItem value={4}>4</MenuItem>
                                                     <MenuItem value={5}>5</MenuItem>
-                                            </TextField>
+                                            </Select> */}
                                          </TableCell>
                                          <TableCell>
                                             <IconButton>
@@ -74,7 +83,7 @@ const CarritoCompras = (props) => {
                             SUBTOTAL ({miArray.length}) PRODUCTOS
                         </Typography>
                         <Typography className={classes.text_title} >
-                           $143.46
+                          {suma}
                         </Typography>
                         <Divider className={classes.gridmb}/>
                         <Button

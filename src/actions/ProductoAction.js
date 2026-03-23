@@ -42,3 +42,16 @@ data: [
 */
 
 /*La paginación la hemos venido implementando dentro de nuestro BackEnd */
+
+
+export const getProducto = id => {
+    return new Promise( (resolve, eject) => {
+        instancia.get(`/api/producto/${id}`)
+        .then( response => {
+            resolve(response);
+        })
+        .catch( error => {
+            resolve(error.response);
+        });
+    });
+}

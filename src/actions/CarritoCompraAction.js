@@ -49,6 +49,7 @@ export const addItem = (carrito, item, dispatch) => {
     }
 
     const indice = carrito.items.findIndex(i => i.id === item.id);
+    //console.log(indice);
 
     if(indice === -1){
         carrito.items.push(item);

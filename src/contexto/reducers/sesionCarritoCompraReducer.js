@@ -1,4 +1,4 @@
-import { StaticRouter } from "react-router-dom/cjs/react-router-dom.min";
+//import { StaticRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 export const initialState = {
     id: "",
