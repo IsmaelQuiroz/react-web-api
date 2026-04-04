@@ -1,4 +1,12 @@
+import { colors } from '@material-ui/core';
+import axios from 'axios';
 import HttpCliente from '../servicios/HttpCliente';
+import { uploadImage } from '../supabase/supabaseCredentials';
+
+const instancia = axios.create(); //instancia se va utilizar donde no se requiere enviar Token
+instancia.CancelToken = axios.CancelToken;
+instancia.isCancel = axios.isCancel;
+
 
 //Crea primero un objeto tipo request tomando la URL base de nuestro server backEnd
 //Luego le tengo que agregar el EndPoint que representa la lista de productos
@@ -8,7 +16,7 @@ export const getProductos = (request) =>{
         //de la siguiente linea de código, 
 
         //se hace la llamada al server
-        HttpCliente.get(`/api/producto?pageIndex=${request.pageIndex}&pageSize=${request.pageSize}&search=${request.search}`).then( response => {//lo que retorna el then es un objeto response, es lo que se le va devolver al cliente
+        instancia.get(`/api/producto?pageIndex=${request.pageIndex}&pageSize=${request.pageSize}&search=${request.search}`).then( response => {//lo que retorna el then es un objeto response, es lo que se le va devolver al cliente
                 resolve(response); //La respuesta va envuelta en un objeto resolve
                 //lo que hace el resolve es indicarle a la función aquí me llegó la data, aqui terminó la Operación. 
                 //y tambiente devuelve la data al cliente o componente react que la solicita
@@ -36,3 +44,35 @@ data: [
 */
 
 /*La paginación la hemos venido implementando dentro de nuestro BackEnd */
+
+
+export const getProducto = id => {
+    return new Promise( (resolve, eject) => {
+        instancia.get(`/api/producto/${id}`)
+        .then( response => {
+            resolve(response);
+        })
+        .catch( error => {
+            resolve(error.response);
+        });
+    });
+}
+
+export const registrarProducto = async (producto) => {
+
+    console.log('producto entrando', producto);
+    const urlImage = await uploadImage(producto.file);
+    console.log('urlImage',urlImage);
+
+    producto.imagen = urlImage;
+
+    return new Promise((resolve, eject) => {
+        HttpCliente.post("/api/producto",producto)
+        .then(response => {
+            resolve(response);
+        })
+        .catch(error => {
+            resolve(error.response);
+        });
+    });
+}
