@@ -1,5 +1,7 @@
+import { colors } from '@material-ui/core';
 import axios from 'axios';
 import HttpCliente from '../servicios/HttpCliente';
+import { uploadImage } from '../supabase/supabaseCredentials';
 
 const instancia = axios.create(); //instancia se va utilizar donde no se requiere enviar Token
 instancia.CancelToken = axios.CancelToken;
@@ -51,6 +53,25 @@ export const getProducto = id => {
             resolve(response);
         })
         .catch( error => {
+            resolve(error.response);
+        });
+    });
+}
+
+export const registrarProducto = async (producto) => {
+
+    console.log('producto entrando', producto);
+    const urlImage = await uploadImage(producto.file);
+    console.log('urlImage',urlImage);
+
+    producto.imagen = urlImage;
+
+    return new Promise((resolve, eject) => {
+        HttpCliente.post("/api/producto",producto)
+        .then(response => {
+            resolve(response);
+        })
+        .catch(error => {
             resolve(error.response);
         });
     });
