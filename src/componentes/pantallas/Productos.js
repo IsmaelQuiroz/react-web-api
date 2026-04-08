@@ -69,7 +69,7 @@ const Productos = (props) => { //props es para cuando quiero utilizar las propie
     if(!paginadorProductos.data){ //si no existe
         return null; //para que no pinte nada
     }
-
+    const imagenDefault = "https://lagatavoladora.com/wp-content/uploads/2025/10/Chaqueta-forro-polar-boho-Flora-marca-Coline-La-Gata-Voladora-4.png";
     return(
 
         <Container className = {classes.containermt}>
@@ -83,8 +83,8 @@ const Productos = (props) => { //props es para cuando quiero utilizar las propie
                     <Card>
                         <CardMedia 
                         className={classes.media}
-                        //image="https://lagatavoladora.com/wp-content/uploads/2025/10/Chaqueta-forro-polar-boho-Flora-marca-Coline-La-Gata-Voladora-4.png"
-                        image={data.atributo}
+                        //image=
+                        image={data.imagen ? data.imagen : imagenDefault}
                         title="Producto Image">
                             <Avatar variant="square" className={classes.price}>
                                 ${data.precio}

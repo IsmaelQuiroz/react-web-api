@@ -20,6 +20,7 @@ const CarritoCompras = (props) => {
         props.history.push("/procesoCompra");
     }
 
+    const defaultImagen = "https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/202406/25/00151057402359____9__440x546.jpg";
     const classes  = useStyles();
     return (
         <Container className={classes.containermt}>
@@ -36,7 +37,7 @@ const CarritoCompras = (props) => {
                                          <TableCell>
                                              <CardMedia 
                                              className={classes.imgProductoCC}
-                                             image="https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/202406/25/00151057402359____9__440x546.jpg"
+                                             image={item.imagen ? item.imagen : defaultImagen}
                                              title={item.producto}
                                              />
                                          </TableCell>

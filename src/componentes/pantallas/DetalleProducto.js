@@ -51,6 +51,7 @@ const DetalleProducto = (props) => {
         props.history.push("/carrito")
     }
 
+    const imagenDefault="https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/202406/25/00151057402359____9__440x546.jpg"
     const classes = useStyles();
     return (
         <Container className={classes.containermt}>
@@ -62,7 +63,7 @@ const DetalleProducto = (props) => {
                     <Paper className={classes.PaperImg} variant="outlined" square>
                         <CardMedia 
                         className={classes.mediaDetalle}
-                        image="https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/202406/25/00151057402359____9__440x546.jpg" 
+                        image={ productoSeleccionado.imagen ? productoSeleccionado.imagen : imagenDefault} 
                         title={productoSeleccionado.descripcion}/>
                     </Paper>
                 </Grid>

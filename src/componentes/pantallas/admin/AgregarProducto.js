@@ -18,6 +18,7 @@ import { v4 as uuidv4} from "uuid";
 
 const AgregarProducto = () => {
 
+    const defaultImage= "https://lagatavoladora.com/wp-content/uploads/2025/10/Chaqueta-forro-polar-boho-Flora-marca-Coline-La-Gata-Voladora-4.png"; 
     const [categoria, setCategoria] = React.useState("");
     const [marca, setMarca] = React.useState("");
     const [producto, setProducto] = React.useState({
@@ -29,7 +30,8 @@ const AgregarProducto = () => {
         categoriaId:0,
         precio:0.0,
         imagen: '',
-        file: ''
+        file: '',
+        imagenTemporal: null
     });
 
     const handleCategoriaChange= (event) => {
@@ -140,7 +142,7 @@ const AgregarProducto = () => {
                 value={marca}
                 onChange={handleMarcaChange}
               >
-                 <MenuItem value={8}>Kingstong</MenuItem>
+                    <MenuItem value={8}>Kingstong</MenuItem>
                     <MenuItem value={9}>ADATA</MenuItem>
                     <MenuItem value={10}>1 HORA</MenuItem>
                 
@@ -157,7 +159,7 @@ const AgregarProducto = () => {
                 >
                   <MenuItem value={1}>Bocinas</MenuItem>
                   <MenuItem value={2}>Impresiones</MenuItem>
-                  <MenuItem value={3}>Cargadores</MenuItem>
+                  <MenuItem value={3}>Audifonos Wireless</MenuItem>
                 </Select>
 
             </FormControl>
