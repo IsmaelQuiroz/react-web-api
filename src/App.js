@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@material-ui/core";
+import { Snackbar, ThemeProvider } from "@material-ui/core";
 import React from "react";
 import MenuAppBar from "./componentes/navegacion/MenuAppBar";
 import Login from "./componentes/seguridad/Login";
@@ -10,7 +10,7 @@ import DetalleProducto from "./componentes/pantallas/DetalleProducto";
 import CarritoCompras from "./componentes/pantallas/CarritoCompras";
 import ProcesoCompra from "./componentes/pantallas/ProcesoCompra";
 import OrdenCompra from "./componentes/pantallas/OrdenCompra";
-import Perfil from "./componentes/pantallas/Perfil";
+import Perfil from "./componentes/seguridad/Perfil";
 import Usuarios from "./componentes/pantallas/admin/Usuarios";
 import EditarUsuario from "./componentes/pantallas/admin/EditarUsuario";
 import ListaProductos from "./componentes/pantallas/admin/ListaProductos";
@@ -25,7 +25,10 @@ import { v4 as uuidv4 } from "uuid";
 import {getCarritoCompra} from './actions/CarritoCompraAction';
 
 function App() {
-  const [{ sesionUsuario }, dispatch] = useStateValue();
+  //esta constante representa los valores del ContextAPI
+  //se esta coonsumiento el sesionUsuario, ahora tambien se quiere consumir el openSnackbar
+  //openSnackbar va contener solo la data que se va mostrar, estado  y mensaje del snackBar
+  const [{ sesionUsuario, openSnackbar }, dispatch] = useStateValue();
 
   //Evento a ejecutar cuando se halla terminado desplegar el codigo HTML de este componente,
   //el codigo HTML es el inferior los Route
@@ -49,6 +52,29 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      
+      <Snackbar  //está declarado a nivel del App para que el snackbar sea utilizado por todos los hijos, es decir cualquier componente de mi proyecto
+         anchorOrigin={{vertical: "bottom", horizontal : "center"}}
+         open={openSnackbar ? openSnackbar.open : false}
+         autoHideDuration={3000}
+         ContentProps={{"aria-describedby":"message-id"}}
+         message={
+           <span id="message-id">
+              {openSnackbar ? openSnackbar.mensaje: ""}
+           </span>
+        }
+        onClose={ () => {
+          dispatch({ //dispatch es la función que cambia la variable de estado global openSnackbar del ContextAPI
+            type: "OPEN_SNACKBAR", //este type sirve de guía hacia que reducer va ejecutar
+            openMensaje: {
+              open: false,
+              mensaje: ""
+            }
+          })
+        }}
+      >
+
+      </Snackbar>
       <Router>
         <MenuAppBar />
         <Switch>

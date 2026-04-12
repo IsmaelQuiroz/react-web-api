@@ -1,12 +1,14 @@
-import { Avatar, Button, Icon,  ListItemIcon,  ListItemText,  Menu, MenuItem } from '@material-ui/core';
+import { Avatar, Button, Icon,  ListItemIcon,  ListItemText,  Menu, MenuItem, ListItem } from '@material-ui/core';
 import React from 'react'
 import useStyles from '../../../theme/useStyles';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import { useState } from 'react';
 import { useStateValue } from '../../../contexto/store';
 
 
-const MenuCliente = () => {
+//con el props y el withRouter se logra la funcionalidad de redireccionamiento entre componentes react hooks
+const MenuCliente = (props) => {
+    const imagenDefault ="https://i.pinimg.com/736x/88/52/7d/88527d9e87b400a4f5f78b3da0208e1b.jpg";
     const [ {sesionUsuario}, dispatch ] = useStateValue();  
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -17,6 +19,20 @@ const MenuCliente = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    }
+
+
+    const salirSesion = (e) => { //va a recibir el parametro del objeto al cual se le esta haciendo push
+        e.preventDefault(); //para que no haga un refresh de la pagina completa al darle click al boton
+        localStorage.removeItem("token");
+        dispatch({
+            type: "SALIR_SESION",
+            nuevoUsuario : null,
+            autenticado: false
+        })
+
+        //indicarle que se redireccione al componente de login
+        props.history.push("/login");
     }
 
     const classes = useStyles();
@@ -35,7 +51,10 @@ const MenuCliente = () => {
                         <Avatar
                         alt="mi imagen"
                         className={classes.avatarPerfilAppBar}
-                        src="https://i.pinimg.com/736x/88/52/7d/88527d9e87b400a4f5f78b3da0208e1b.jpg"
+                        src={sesionUsuario 
+                            ? (sesionUsuario.usuario.imagen ? sesionUsuario.usuario.imagen : imagenDefault)
+                            :imagenDefault
+                            }
                         />
                         { sesionUsuario 
                         ? (sesionUsuario.autenticado ? sesionUsuario.usuario.nombre +' ' +  sesionUsuario.usuario.apellido : "No sesión")
@@ -74,7 +93,11 @@ const MenuCliente = () => {
                             <ListItemIcon className={classes.ListItemIcon}>
                                 <Icon>exit_to_app</Icon>
                             </ListItemIcon>
-                            <ListItemText>Cerrar_sesion</ListItemText>
+
+                            <listItem button onClick={salirSesion}>
+                                <ListItemText>Cerrar_sesion</ListItemText>
+                            </listItem>
+                           
                         </Link>
                     </MenuItem>
                 </Menu>
@@ -83,4 +106,4 @@ const MenuCliente = () => {
     );
 };
 
-export default MenuCliente;
+export default withRouter(MenuCliente);
