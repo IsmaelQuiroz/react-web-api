@@ -1,8 +1,61 @@
 import { Button, Checkbox, Container, FormControl, FormControlLabel, Grid, TextField, Typography } from '@material-ui/core';
 import React from 'react'
+import { useState, useEffect } from 'react';
 import useStyles from '../../../theme/useStyles';
+import { agregarRole, getUsuarioById} from '../../../actions/UsuarioAction'
+import { withRouter } from 'react-router-dom';
+import {useStateValue} from '../../../contexto/store';
 
-const EditarUsuario = () => {
+const EditarUsuario = (props) => {
+
+    const [{sesionUsuario}, dispatch] = useStateValue();
+
+    const [usuario, setUsuario] = useState({
+        nombre: "",
+        apellido: "",
+        email:""
+    });
+
+    const [admin, setAdmin] = useState(false);
+    
+    //recibe el estado del checkbox
+    const handleChange = (e) => {
+        setAdmin(e.target.checked);
+    }
+
+    useEffect ( () => {
+        const id = props.match.params.id;
+        const getUsuarioIdAsync = async () => {
+            const response = await getUsuarioById(id);
+            setAdmin(response.data.admin);
+            setUsuario(response.data);
+        }
+
+        getUsuarioIdAsync();
+    },[])
+
+    const actualizarRoleUsuario = async (e) => {
+        e.preventDefault();
+        const id = props.match.params.id;
+        const role = {
+            nombre: "ADMIN",
+            status: admin
+        }
+
+        const response = await agregarRole(id,role,dispatch);
+
+        if(response.status === 200){
+            props.history.push("/admin/usuarios");
+        }else{
+            dispatch({
+                type: "OPEN_SNACKBAR",
+                openMensaje: {
+                    open: true,
+                    mensaje: "No es posible agregar este role admin"
+                }
+            })
+        }
+    }
     const classes = useStyles();
 
     return (
@@ -16,25 +69,34 @@ const EditarUsuario = () => {
                         <TextField 
                         label="Nombre"
                         variant="filled"
-                        value="Javier Nepomuseno"
+                        value={usuario.nombre + ' ' + usuario.apellido}
                         fullWidth
                         disabled
+                        name="nombre"
                         className={classes.gridmb}/>
+
+
                         <TextField
                         label="Correo Electronico"
                         variant="filled"
-                        value="javi@gmail.com"
+                        name="email"
+                        value={usuario.email}
                         fullWidth
                         disabled />
                         <FormControl className={classes.checkbox}>
                             <FormControlLabel 
-                            control={<Checkbox color="primary"/>}
+                            control={
+                                <Checkbox color="primary"/>}
+                            checked={admin}
+                            onChange={handleChange}
                             label="Es Administrador"
+                            
                             />
                         </FormControl>
                         <Button
                         variant="contained"
-                        color="primary">
+                        color="primary"
+                        onClick={actualizarRoleUsuario}>
                             Actualizar
                         </Button>
 
@@ -45,4 +107,4 @@ const EditarUsuario = () => {
     );
 };
 
-export default EditarUsuario;
+export default withRouter(EditarUsuario);

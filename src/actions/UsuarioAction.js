@@ -6,6 +6,45 @@ const instancia = axios.create(); //instancia se va utilizar donde no se requier
 instancia.CancelToken = axios.CancelToken;
 instancia.isCancel = axios.isCancel;
 
+
+export const getUsuarioById = (id) => {
+    return new Promise( (resolve, eject) => {
+        HttpCliente.get(`/api/usuario/account/${id}`)
+        .then(response => {
+            resolve(response);
+        })
+        .catch(error => {
+            resolve(error.response);
+        })
+    }) 
+}
+
+export const agregarRole = (id, role, dispatch) => {
+    return new Promise((resolve, eject) => {
+        HttpCliente.put(`/api/usuario/role/${id}`,role)
+        .then(response => {
+            resolve(response);
+        })
+        .catch(error => {
+            resolve(error.response);
+        });
+    })
+} 
+
+
+export const getUsuarios = (request) => {
+    return new Promise( (resolve, eject) => {
+        HttpCliente.get(`/api/usuario/pagination?pageIndex=${request.pageIndex}&pageSize=${request.pageSize}&search=${request.search}`)
+        .then(response => {
+            resolve(response);
+        })
+        .catch(error => {
+            resolve(error.response);
+        })
+
+    });
+}
+
 export const actualizarUsuario = async (id, usuario, dispatch) => {
     if(usuario.file){
         const urlImage = await uploadImage(usuario.file);

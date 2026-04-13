@@ -1,12 +1,53 @@
 import { Button, Container, Icon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
 import React from 'react'
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { getUsuarios } from '../../../actions/UsuarioAction';
 import useStyles from '../../../theme/useStyles';
+import { withRouter } from 'react-router-dom';
 
 const Usuarios = (props) => {
+    //para el request que se envía al server
+    const [requestUsuarios, setRequestUsuarios] = useState({
+       pageIndex : 1,
+       pageSize: 3,
+       search : '' 
+    });
+
+    //contenedor de los datos que devuelva el server
+    const [paginadorUsuarios, setPaginadorUsuarios] = useState({
+        count: 0,
+        pageIndex: 0,
+        pageSize: 0,
+        pageCount: 0,
+        data: []
+    });
+
+    //evento para controlar el click en número de pagina
+    const handleChange = (event, value) => {
+        setRequestUsuarios( (anterior) => ({
+            ...anterior,
+            pageIndex : value
+        }))
+    }
+
+    useEffect( () => {
+        
+        const getListaUsuarios = async () => {
+            const response = await getUsuarios(requestUsuarios);
+            setPaginadorUsuarios(response.data);
+        }
+
+        getListaUsuarios();
+
+    },[requestUsuarios])
+
+
     const classes = useStyles();
 
-    const editaUsuario = () => {
-        const id = "19ffd769-cf4d-4d0a-8907-f745fd32320b";
+    const editaUsuario = (id) => {
+        //const id = "19ffd769-cf4d-4d0a-8907-f745fd32320b";
         props.history.push("/admin/usuario/" + id);
     }
 
@@ -22,60 +63,43 @@ const Usuarios = (props) => {
                             <TableCell>ID</TableCell>
                             <TableCell>USUARIO</TableCell>
                             <TableCell>EMAIL</TableCell>
-                            <TableCell>ADMIN</TableCell>
+                            <TableCell>USERNAME</TableCell>
+                            <TableCell>Perfil</TableCell>
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableRow>
-                            <TableCell>7a3bc556-a8b0-4112-84d3-fbdf007d1a40</TableCell>
-                            <TableCell>Victoria del Carmen</TableCell>
-                            <TableCell>vdc@gmail.com</TableCell>
-                            <TableCell>
-                                <Icon className={classes.iconDelivery}>
-                                    check
-                                </Icon>
-                            </TableCell>
-                            <TableCell>
-                                <Button variant="contained"
-                                color="primary"
-                                onClick={editaUsuario}>
-                                    <Icon>edit</Icon>
-                                </Button>
-                                <Button
-                                variant="contained"
-                                color="secondary">
-                                    <Icon>delete</Icon>
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>19ffd769-cf4d-4d0a-8907-f745fd32320b</TableCell>
-                            <TableCell>Javier Nepomuseno</TableCell>
-                            <TableCell>javi@gmail.com</TableCell>
-                            <TableCell>
-                                <Icon className={classes.iconNotDelivery}>
-                                    clear
-                                </Icon>
-                            </TableCell>
-                            <TableCell>
-                                <Button variant="contained"
-                                color="primary"
-                                onClick={editaUsuario}>
-                                    <Icon>edit</Icon>
-                                </Button>
-                                <Button
-                                variant="contained"
-                                color="secondary">
-                                    <Icon>delete</Icon>
-                                </Button>
-                            </TableCell>
-                        </TableRow>
+                    {console.log('data_user', paginadorUsuarios.data)}
+                        {
+                            paginadorUsuarios.data.map( (usuario) => (
+                               
+                                <TableRow key={usuario.id}>
+                                    <TableCell>{usuario.id}</TableCell>
+                                    <TableCell>{usuario.nombre + ' ' + usuario.apellido}</TableCell>
+                                    <TableCell>{usuario.email}</TableCell>
+                                    <TableCell>{usuario.username}</TableCell>
+                                    <TableCell>{
+                                        usuario.admin ? "admin" :''
+                                    }</TableCell>
+                                    <TableCell>
+                                        <Button
+                                        variant="contained"
+                                        color='primary'
+                                        onClick={
+                                            () => editaUsuario(usuario.id)}
+                                        >
+                                           <Icon>edit</Icon>     
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Pagination count={paginadorUsuarios.pageCount} page={paginadorUsuarios.pageIndex} onChange={handleChange}/>
         </Container>
     );
 };
 
-export default Usuarios;
+export default withRouter(Usuarios);
