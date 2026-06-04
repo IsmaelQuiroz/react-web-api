@@ -1,9 +1,77 @@
 import { Avatar, Button, Container, Divider, Grid, Icon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@material-ui/core';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import useStyles from '../../theme/useStyles';
 import ImageUploader from 'react-images-upload';
+import { useStateValue } from '../../contexto/store';
+import {v4 as uuidv4} from 'uuid';
+import {actualizarUsuario} from '../../actions/UsuarioAction';
+import { withRouter } from 'react-router-dom';
 
 const Perfil = (props) => {
+    const imagenDefault = "https://i.pinimg.com/736x/88/52/7d/88527d9e87b400a4f5f78b3da0208e1b.jpg" ;
+    const[{sesionUsuario}, dispatch] = useStateValue();
+    const[usuario, setUsuario] = useState({
+        id: '',
+        nombre: '',
+        apellido:'',
+        imagen:'',
+        password:'',
+        file:'',
+        imagenTemporal:'',
+        email:''
+    });
+
+    const handleChange = (e) =>{
+        const { name, value} = e.target;
+        setUsuario(prev => ({
+            ...prev,
+            [name] : value
+        }))
+    }
+
+    useEffect( () => {
+        if(sesionUsuario){
+                setUsuario(sesionUsuario.usuario)            
+        }
+    }, [sesionUsuario])
+
+    const subirImagen =(imagenes) => {
+        //Captura de la imagen temporal
+        let foto = imagenes[0];
+        let fotoUrl = "";
+
+        try{
+            fotoUrl = URL.createObjectURL(foto);
+        }catch(e){
+            console.log(e);
+        }
+
+        setUsuario( (prev) => ({
+            ...prev,
+            file: foto,
+            imagenTemporal: fotoUrl
+        }))
+    }
+
+    const guardarUsuario = (e) => {
+        e.preventDefault();
+        actualizarUsuario(sesionUsuario.usuario.id, usuario, dispatch)
+        .then(response => {
+            if(response.status === 200){
+                window.localStorage.setItem("token", response.data.token);
+                props.history.push('/');
+            }else{
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    openMensaje: {
+                        open: true,
+                        mensaje: "Errores actualizando el perfil de usuario"
+                    }
+                });
+            }
+        });
+    }
+    const keyImage = uuidv4();
     const classes = useStyles();
 
     const verDetalles = () =>{
@@ -20,46 +88,68 @@ const Perfil = (props) => {
                     <form onSubmit={(e) => e.preventDefault()} className={classes.form}>
                         {/*Este componente es para cargar y validar imágenes */}
                         <ImageUploader 
+                        key={keyImage}
+                        onChange={subirImagen}
                         withIcon={false /*Es para que no se muestre el icono de carga */} 
                         buttonStyles={{borderRadius: "50%", padding: 10, margin:0,
                         position: "absolute", bottom: 15, left: 15}}
                         className={classes.imageUploader}
                         buttonText={<Icon>add_a_photo</Icon>}
-                        label={<Avatar alt="mi perfil" className={classes.avatarPerfil} 
-                        src="https://i.pinimg.com/736x/88/52/7d/88527d9e87b400a4f5f78b3da0208e1b.jpg" /> }
+                        label={
+                            <Avatar alt="mi perfil" className={classes.avatarPerfil} 
+                            src={
+                                usuario.imagenTemporal 
+                                ? usuario.imagenTemporal 
+                                : (usuario.imagen ? usuario.imagen : imagenDefault ) }
+                            /> 
+                        }
                         imgExtension={['.jpg','.gif','.png','.jpeg']}
                         maxFileSize={5242880}/>
+                        
                         <TextField 
                         label="Nombre"
                         variant="outlined"
                         fullWidth
                         className={classes.gridmb}
-                        value="Mario Ismael"/>
+                        name="nombre"
+                        value={usuario.nombre}
+                        onChange={handleChange}
+                        />
+
                         <TextField 
                         label="Apellidos"
+                        name="apellido"
                         variant="outlined"
                         fullWidth
                         className={classes.gridmb}
-                        value="Quiroz Castillo"/>
+                        value={usuario.apellido}
+                        onChange={handleChange}
+                        />
+
                         <TextField
                         label="Email"
                         variant="outlined"
                         fullWidth
                         className={classes.gridmb}
-                        value="Mario@gmail.com"/>
+                        value={usuario.email}
+                        name="email"
+                        onChange={handleChange}/>
+
                         <Divider className={classes.divider}/>
                         <TextField
                         label="Password"
                         variant="outlined"
                         fullWidth
                         className={classes.gridmb}/>
+                        
                         <TextField
                         label="Confirmar Password"
                         variant="outlined"
                         fullWidth
                         className={classes.gridmb}/>
                         <Button variant="contained"
-                        color="primary">
+                        color="primary"
+                        onClick={guardarUsuario}>
                             ACTUALIZAR
                         </Button>
                     </form> 
@@ -111,4 +201,4 @@ const Perfil = (props) => {
     )
 }
 
-export default Perfil;
+export default withRouter(Perfil);

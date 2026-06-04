@@ -1,9 +1,12 @@
 import { Avatar, Collapse, Divider, Icon, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter} from 'react-router-dom';
+import { useStateValue } from '../../../contexto/store';
 import useStyles from '../../../theme/useStyles';
 
  const MenuMovil = (props) => {
+    const imagenDefault = "https://i.pinimg.com/736x/88/52/7d/88527d9e87b400a4f5f78b3da0208e1b.jpg";
+    const [{sesionUsuario}, dispatch] = useStateValue();
     const [openCliente, setOpenCliente] = useState(false);
     const [openAdmin, setOpenAdmin] = useState(false);
 
@@ -15,6 +18,17 @@ import useStyles from '../../../theme/useStyles';
         setOpenAdmin((prevOpen) => !prevOpen);
     }
 
+    const salirSesion = (e) => {
+        e.preventDefault();
+        dispatch({
+            type: "SALIR_SESION",
+            nuevoUsuario: null,
+            autenticado: false
+        });
+
+        props.history.push("/login");
+    }
+
     const classes = useStyles();
     return(
         <>
@@ -23,9 +37,15 @@ import useStyles from '../../../theme/useStyles';
                     <Avatar
                     alt="mi imagen"
                     className={classes.avatarPerfilAppBar}
-                    src="https://i.pinimg.com/736x/88/52/7d/88527d9e87b400a4f5f78b3da0208e1b.jpg"
+                    src={sesionUsuario 
+                        ? (sesionUsuario.usuario.imagen  ? sesionUsuario.usuario.imagen : imagenDefault)
+                        : imagenDefault }
                     />
-                    <ListItemText>Mario</ListItemText>
+                    <ListItemText>{
+                        sesionUsuario ? (sesionUsuario.autenticado ? sesionUsuario.usuario.nombre + ' ' + sesionUsuario.usuario.apellido : ' ')
+                        : "No sesion"
+                        }
+                    </ListItemText>
                     <Icon>keyboard_arrow_down</Icon>
                 </div>
             </ListItem>  
@@ -48,9 +68,11 @@ import useStyles from '../../../theme/useStyles';
                             <ListItemIcon className={classes.ListItemIcon}>
                                 <Icon>exit_to_app</Icon>
                             </ListItemIcon>
-                            <ListItemText>
-                                Cerrar Sesion
-                            </ListItemText>
+                            <listItem button onClick={salirSesion}>
+                                <ListItemText>
+                                   Cerrar Sesion
+                                </ListItemText>
+                            </listItem>
                         </Link>
                     </ListItem>
                     <Divider/>
@@ -118,4 +140,4 @@ import useStyles from '../../../theme/useStyles';
     );
  };
 
- export default MenuMovil;
+ export default withRouter(MenuMovil);

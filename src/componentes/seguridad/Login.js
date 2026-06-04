@@ -31,13 +31,23 @@ const Login = (props) => {
     }
 
     const loginEventoUsuario = () => {
+
         loginUsuario(usuario, dispatch).then((response) => {
             if(response.status === 200){
                 window.localStorage.setItem('token', response.data.token);
                 console.log('el login fue exitoso', response.data);
                 props.history.push('/');
             }else{
-                console.log('las credenciales fueron erroneas', response.data);
+
+                //console.log('las credenciales fueron erroneas', response.data);
+                dispatch({
+                       type : "OPEN_SNACKBAR",
+                       openMensaje : {
+                            open: true,
+                            mensaje: "El password o el email son incorrectos"
+                       } 
+                });
+
             }
         })
     }
