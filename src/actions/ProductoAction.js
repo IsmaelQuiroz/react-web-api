@@ -7,6 +7,24 @@ const instancia = axios.create(); //instancia se va utilizar donde no se requier
 instancia.CancelToken = axios.CancelToken;
 instancia.isCancel = axios.isCancel;
 
+export const actualizarProducto = async (id, producto ) => {
+
+    if(producto.file){
+        const urlImage = await uploadImage(producto.file);
+        producto.imagen = urlImage;
+    }
+
+    return new Promise( (resolve, eject) => {
+        
+        HttpCliente.put(`/api/producto/${id}`, producto)
+        .then(response => {
+            resolve(response);
+        })
+        .catch(error => {
+            resolve(error.response);
+        })
+    })
+}
 
 //Crea primero un objeto tipo request tomando la URL base de nuestro server backEnd
 //Luego le tengo que agregar el EndPoint que representa la lista de productos
@@ -16,7 +34,8 @@ export const getProductos = (request) =>{
         //de la siguiente linea de código, 
 
         //se hace la llamada al server
-        instancia.get(`/api/producto?pageIndex=${request.pageIndex}&pageSize=${request.pageSize}&search=${request.search}`).then( response => {//lo que retorna el then es un objeto response, es lo que se le va devolver al cliente
+        instancia.get(`/api/producto?pageIndex=${request.pageIndex}&pageSize=${request.pageSize}&search=${request.search}`).
+        then( response => {//lo que retorna el then es un objeto response, es lo que se le va devolver al cliente
                 resolve(response); //La respuesta va envuelta en un objeto resolve
                 //lo que hace el resolve es indicarle a la función aquí me llegó la data, aqui terminó la Operación. 
                 //y tambiente devuelve la data al cliente o componente react que la solicita
@@ -24,7 +43,7 @@ export const getProductos = (request) =>{
     }) 
     //resolve: el valor que va retornar, lista de productos que voy a devolver al cliente
     //eject: permite terminar la operación en el momento que yo crea conveniente
-}
+};
 
 /*El objeto response: devuelve la data de una forma especial, que depende de la forma en la que 
 devuelve la data el EndPoint, devuelve las siguientes propiedades en formato JSON
@@ -60,10 +79,12 @@ export const getProducto = id => {
 
 export const registrarProducto = async (producto) => {
 
-    console.log('producto entrando', producto);
+    if(producto.file){
+        const imageUrl = await uploadImage(producto.file);
+        producto.imagen = imageUrl;
+    }    
+  
     const urlImage = await uploadImage(producto.file);
-    console.log('urlImage',urlImage);
-
     producto.imagen = urlImage;
 
     return new Promise((resolve, eject) => {

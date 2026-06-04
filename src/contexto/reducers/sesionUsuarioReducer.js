@@ -1,5 +1,6 @@
 export const initialStateLocal = {
     usuario: {
+        id: "",
         nombre: "",
         apellido: "",
         email: "",

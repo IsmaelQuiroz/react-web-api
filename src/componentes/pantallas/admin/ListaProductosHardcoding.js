@@ -1,49 +1,9 @@
 import { Button, Container, Grid, Icon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react';
-import { getProductos } from '../../../actions/ProductoAction';
+import React from 'react';
 import useStyles from '../../../theme/useStyles';
 import { ProductoArray } from '../../data/dataPrueba';
 
 const ListaProductos = (props) => {
-
-    const [requestProductos, setRequestProductos] = useState({
-        pageIndex: 1, //que me envie la primera pagina
-        pageSize: 20, 
-        search: '',      
-    });
-
-    //Estos valores se van a setear con la data que devuelva el Servidor
-    const [paginadorProductos, setPaginadorProductos] = useState({
-       count : 0,
-       pageIndex: 0,
-       pageSize: 0,
-       pageCount: 0,
-       data: [] 
-    });
-
-    //control de paginación (controles del pie de pagina)
-    //setRequestProductos es la variable que refresca el grid
-    const handleChange = (event, value) => {
-        setRequestProductos( (anterior) => ({
-            ...anterior, //e le indica que mantenga todo lo anterior
-            pageIndex: value    //solo actualice el pageIndex con el value que esta ingresando
-        })) 
-    };
-
-    //va trabajar cada vez que una variable de estado cambie
-    //se le hará trabajar cada vez que un valor de requestProductos cambie
-    useEffect ( () => {
-        //se declara el método para obtener la lista de productos
-          const getListaProductos = async () => {
-            const response = await getProductos(requestProductos);
-            setPaginadorProductos(response.data);
-          };
-
-          getListaProductos();
-    },[requestProductos]); //el requestProductos esta en constante evaluación, cada vez que cambie 
-    //se va disparar la logica del metodo useEffect
-
     const classes = useStyles();
 
     const agregarProducto = () => {
@@ -81,23 +41,21 @@ const ListaProductos = (props) => {
                             <TableCell>NOMBRE</TableCell>
                             <TableCell>PRECIO</TableCell>
                             <TableCell>MARCA</TableCell>
-                            <TableCell>CATEGORÍA</TableCell>
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {paginadorProductos.data.map( (producto) => (
-                            <TableRow key={producto.id}>
-                                <TableCell>{producto.id}</TableCell>
-                                <TableCell>{producto.nombre}</TableCell>
+                        {productos.map( (producto) => (
+                            <TableRow key={producto.key}>
+                                <TableCell>{producto.key}</TableCell>
+                                <TableCell>{producto.titulo}</TableCell>
                                 <TableCell>{producto.precio}</TableCell>
-                                <TableCell>{producto.marcaNombre}</TableCell>
-                                <TableCell>{producto.categoriaNombre}</TableCell>
+                                <TableCell>{producto.marca}</TableCell>
                                 <TableCell>
                                     <Button
                                     variant="contained"
                                     color="primary"
-                                    onClick={() => editaProducto(producto.id)}>
+                                    onClick={() => editaProducto(producto.key)}>
                                         <Icon>edit</Icon>
                                     </Button>
                                     <Button
@@ -111,7 +69,6 @@ const ListaProductos = (props) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Pagination count={paginadorProductos.pageCount} page={paginadorProductos.pageIndex} onChange={handleChange}/>
         </Container>
     );
 };
