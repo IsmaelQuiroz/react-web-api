@@ -1,5 +1,5 @@
 # Ecommerce React Application
-use React-Hooks with ContextAPI, Material-UI for modern Design
+use React-Hooks with ContextAPI, Material-UI, js Styles for modern Design
 
 # Getting Started with Create React App
 
